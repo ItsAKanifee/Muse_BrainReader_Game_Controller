@@ -20,13 +20,11 @@ class Muse:
 
     # Index of the channel(s) (electrodes) to be used
     # 0 = left ear, 1 = left forehead, 2 = right forehead, 3 = right ear
-    INDEX_CHANNEL = [0]
+    INDEX_CHANNEL = [1]
 
-    inlet, eeg_buffer, filter_state, band_buffer, fs = None
+    
 
     def __init__(self):
-
-        global inlet, eeg_buffer, filter_state, band_buffer, fs
 
         print('Looking for an EEG stream...')
         streams = resolve_byprop('type', 'EEG', timeout=2)
@@ -35,22 +33,22 @@ class Muse:
 
         # Set active EEG stream to inlet and apply time correction
         print("Start acquiring data")
-        inlet = StreamInlet(streams[0], max_chunklen=12)
-        eeg_time_correction = inlet.time_correction()
+        self.inlet = StreamInlet(streams[0], max_chunklen=12)
+        self.eeg_time_correction = self.inlet.time_correction()
 
     
-        info = inlet.info()
-        description = info.desc()
+        info = self.inlet.info()
+        self.description = info.desc()
 
-        fs = int(info.nominal_srate())
+        self.fs = int(info.nominal_srate())
 
-        eeg_buffer = np.zeros((int(fs * self.BUFFER_LENGTH), 1))
-        filter_state = None  
+        self.eeg_buffer = np.zeros((int(self.fs * self.BUFFER_LENGTH), 1))
+        self.filter_state = None  
 
         n_win_test = int(np.floor((self.BUFFER_LENGTH - self.EPOCH_LENGTH) /
                                 self.SHIFT_LENGTH + 1))
 
-        band_buffer = np.zeros((n_win_test, 4))
+        self.band_buffer = np.zeros((n_win_test, 4))
 
     
     def process(self):
@@ -61,29 +59,29 @@ class Muse:
             Alpha = 2
             Beta = 3
 
-        eeg_data, timestamp = inlet.pull_chunk(
-                timeout=1, max_samples=int(self.SHIFT_LENGTH * fs))
+        self.eeg_data, self.timestamp = self.inlet.pull_chunk(
+                timeout=1, max_samples=int(self.SHIFT_LENGTH * self.fs))
 
         # Only keep the channel we're interested in
-        ch_data = np.array(eeg_data)[:, self.INDEX_CHANNEL]
+        self.ch_data = np.array(self.eeg_data)[:, self.INDEX_CHANNEL]
 
         # Update EEG buffer with the new data
-        eeg_buffer, filter_state = utils.update_buffer(
-            eeg_buffer, ch_data, notch=True,
-            filter_state=filter_state)
+        self.eeg_buffer, self.filter_state = utils.update_buffer(
+            self.eeg_buffer, self.ch_data, notch=True,
+            filter_state=self.filter_state)
 
         """ 3.2 COMPUTE BAND POWERS """
         # Get newest samples from the buffer
-        data_epoch = utils.get_last_data(eeg_buffer,
-                                            self.EPOCH_LENGTH * fs)
+        data_epoch = utils.get_last_data(self.eeg_buffer,
+                                            self.EPOCH_LENGTH * self.fs)
 
         # Compute band powers
-        band_powers = utils.compute_band_powers(data_epoch, fs)
-        band_buffer, _ = utils.update_buffer(band_buffer,
+        band_powers = utils.compute_band_powers(data_epoch, self.fs)
+        self.band_buffer, _ = utils.update_buffer(self.band_buffer,
                                                 np.asarray([band_powers]))
         # Compute the average band powers for all epochs in buffer
         # This helps to smooth out noise
-        smooth_band_powers = np.mean(band_buffer, axis=0)
+        smooth_band_powers = np.mean(self.band_buffer, axis=0)
         delta_metric = band_powers[Band.Delta] # Blink signal
 
         #print('Delta: ', band_powers[Band.Delta], ' Theta: ', band_powers[Band.Theta],

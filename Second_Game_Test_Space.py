@@ -2,30 +2,41 @@ from Game_Folder import Jumpy_Bird as JB
 import pygame as pg
 import asyncio as asyn
 import random
+from Muse_Reader_Assets import Reader
 
+Muse_Device = Reader.Muse()
 
+blink, focus = False, False
 
-condition_one, condition_two = False, False
+wait = 0
 
-async def Controller_Method(): # simulate the output of the Muse Device
+async def Controller_Method(): # Output of the Muse Device
     while True: 
-        global condition_one, condition_two
-        if random.randrange(0,9) <= 5: # give the numbers a 50% chance to produce either true or false
-            #condition_one = True
-            print('something')
+        global blink, focus, wait
+
+        if wait > 0:
+            wait -= 1
+        
+        alpha_metric, beta_metric, theta_metric, delta_metric = Muse_Device.process()
+
+        if delta_metric > 1.5 and wait == 0:# I need a cooldown for blinks because it stays active for too long
+            blink = True
+            wait = 5
         else:
-            condition_one = False # change the global variables to be either true or false
-            print('something else')
-        if random.randrange(0,9)  <= 5: 
-            condition_two = True
+            blink = False
+        print(beta_metric)
+
+        if 0.5 < beta_metric < 1:
+            focus = True
         else:
-            condition_two = False
-        await asyn.sleep(1) # simulates delay in reader, and is necessary to allow for the pygame method not to break
+            focus = False
+
+        await asyn.sleep(0.15) # necessary to not allow the pygame method to break
          
 
 async def main():
 
-    global  condition_one, condition_two
+    global  blink, focus
 
     pg.init()
 
@@ -36,14 +47,13 @@ async def main():
     running = True
     while running:
     
-    
         # actions for when keys are pressed
         for event in pg.event.get(): 
             if event.type == pg.QUIT:
                 running = False
                 break
                   
-        Game.logic(blink= condition_one, focus= condition_two)
+        Game.logic(blink, focus)
         await asyn.sleep(0.01)
 
     controller_Function.cancel()
