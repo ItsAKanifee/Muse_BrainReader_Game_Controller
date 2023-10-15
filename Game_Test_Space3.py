@@ -2,9 +2,7 @@ from Game_Folder import Jumpy_Bird as JB
 import pygame as pg
 import asyncio as asyn
 import random
-from Muse_Reader_Assets import Reader
 
-Muse_Device = Reader.Muse()
 
 blink, focus = False, False
 
@@ -17,19 +15,19 @@ async def Controller_Method(): # Output of the Muse Device
         if wait > 0:
             wait -= 1
         
-        alpha_metric, beta_metric, theta_metric, delta_metric = Muse_Device.process()
+        delta_metric = random.randrange(-1,4)
+        beta_metric = random.randrange(-1,4)
 
-        if delta_metric > 1.5 and wait == 0:# I need a cooldown for blinks because it stays active for too long
+        if delta_metric > 2 and wait == 0:# I need a cooldown for blinks because it stays active for too long
             blink = True
             wait = 5
         else:
             blink = False
-        print(beta_metric)
 
         if 0.18 < beta_metric and delta_metric < 0.8:
-            focus = True
+            focus = False
         elif .7 < beta_metric:
-            focus = True
+            focus = False
         else:
             focus = False
 
