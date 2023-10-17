@@ -11,7 +11,7 @@ class Game:
         self.alive = True
         self.screen_size_x = screen_size_x
         
-        object_length = 50
+        object_length = 30
         object_height = 100
 
         self.frame = 0 # initialize counting variables
@@ -47,16 +47,16 @@ class Game:
         self.Player.falltime += 1/100 # count the frames to declare a falltime in physics
 
         self.physics(blink)
-        self.shrink(focus)
+        #self.shrink(focus)
         if self.alive:
             self.shiftBlock()
 
         # if player hits block 1
-        if self.Player.Posx == self.Block1.Posx and (self.Player.Posy < self.Block1.opening or self.Player.Posy + 50 > self.Block1.opening + 50):
+        if self.Player.Posx == self.Block1.Posx and (self.Player.Posy < self.Block1.opening or self.Player.Posy + 30 > self.Block1.opening + 100):
             print('ouch')
         
         # if player hits block 2
-        if self.Player.Posx == self.Block2.Posx and (self.Player.Posy < self.Block2.opening or self.Player.Posy + 50 > self.Block2.opening + 50):
+        if self.Player.Posx == self.Block2.Posx and (self.Player.Posy < self.Block2.opening or self.Player.Posy + 30 > self.Block2.opening + 100):
             print('hit')
 
         # update the assets in the game
@@ -72,20 +72,20 @@ class Game:
 
 
     def physics(self, blink): # Here is the function that defines falls, bounces, and jumps
-        Gravity = 9.8
+        Gravity = 12
         
         if self.Player.bounceFrame > 0:
             self.Player.bounceFrame -= 1
 
         if blink and self.Player.frame == 0: # add in a cooldown so that someone cannot spam the jump
             self.Player.falltime = 0
-            self.Player.Jump_Velocity = -5
-            self.Player.frame = 50
+            self.Player.Jump_Velocity = -4
+            self.Player.frame = 10
             
         if 0 < self.Player.Posy: # have the fall be affected by the jump
             fall_velocity = self.Player.Jump_Velocity + Gravity * self.Player.falltime # falling animation
         else:
-            self.Player.frame = 50
+            self.Player.frame = 10
             fall_velocity = Gravity * self.Player.falltime
 
         Touchdown = self.Player.Posy >= (self.Ground_surface_y - self.Player.Size_y) # create a boolean to declare if player is touching ground
@@ -115,8 +115,8 @@ class Game:
         self.Player.Player_surface.fill('Red')
 
     def shiftBlock(self): # figure out a way to generate random blocks
-        self.Block1.Posx -= 5
-        self.Block2.Posx -= 5
+        self.Block1.Posx -= 2
+        self.Block2.Posx -= 2
         if self.Block1.Posx <= -50:
             self.Block1 = Block(random.randrange(100,300), self.screen_size_x, 0)
         if self.Block2.Posx <= -50:

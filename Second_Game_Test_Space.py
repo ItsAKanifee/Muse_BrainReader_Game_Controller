@@ -19,12 +19,12 @@ async def Controller_Method(): # Output of the Muse Device
         
         alpha_metric, beta_metric, theta_metric, delta_metric = Muse_Device.process()
 
-        if delta_metric > 1.5 and wait == 0:# I need a cooldown for blinks because it stays active for too long
+        if delta_metric > 1.9 and wait == 0:# I need a cooldown for blinks because it stays active for too long
             blink = True
             wait = 5
         else:
             blink = False
-        print(beta_metric)
+        print(delta_metric)
 
         if 0.18 < beta_metric and delta_metric < 0.8:
             focus = True

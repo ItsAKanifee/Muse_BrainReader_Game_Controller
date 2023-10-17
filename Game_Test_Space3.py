@@ -46,14 +46,17 @@ async def main():
 
     running = True
     while running:
+        test = False
     
         # actions for when keys are pressed
         for event in pg.event.get(): 
             if event.type == pg.QUIT:
                 running = False
                 break
+            if event.type == pg.KEYUP:
+                test = True
                   
-        Game.logic(blink, focus)
+        Game.logic(test, focus)
         await asyn.sleep(0.01)
 
     controller_Function.cancel()
