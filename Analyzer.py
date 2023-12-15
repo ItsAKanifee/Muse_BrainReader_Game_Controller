@@ -27,6 +27,7 @@ class Band:
     Theta = 1
     Alpha = 2
     Beta = 3
+    Gamma = 4
 
 
 """ EXPERIMENTAL PARAMETERS """
@@ -152,6 +153,7 @@ if __name__ == "__main__":
             theta_metric = smooth_band_powers[Band.Theta] / \
                 smooth_band_powers[Band.Alpha]
             #print('Theta Relaxation: ', theta_metric)
+            #print(smooth_band_powers[Band.Gamma])
 
            
 

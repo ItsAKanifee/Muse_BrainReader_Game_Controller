@@ -20,6 +20,8 @@ ax2.plot(time, y2)
 ax3.plot(time, y3)
 ax4.plot(time, y4)
 
+
+
 plt.rcParams["figure.figsize"] = [7.50, 3.50]
 plt.rcParams["figure.autolayout"] = True
 
@@ -27,15 +29,19 @@ Device = Reader.Muse()
 
 timestamp = 0
 
+df1 = pd.DataFrame([["timestamp: ", "Beta: ", "Delta: "], [0,0,0]])
+
 def update(i):
     global timestamp
     
     alpha, beta, theta, delta = Device.process()
     time.append(timestamp)
+
+    df1.loc[i+1] = [timestamp, beta, delta]
     
     y1.append(alpha)
     y2.append(beta)
-    print(beta)
+    print("timestamp: ", timestamp,  "Beta: ", beta)
     y3.append(theta)
     y4.append(delta)
     plt.cla()
@@ -44,14 +50,16 @@ def update(i):
     ax3.plot(time, y3)
     ax4.plot(time, y4)
 
-    timestamp += 1
+
+    timestamp += .1
     
 
 
-animation = ani.FuncAnimation(fig, update, interval = 100)
+animation = ani.FuncAnimation(fig, update, interval = 100, cache_frame_data=False)
 plt.show()
 plt.close()
-print("Done")
 
+print("Done")
+print(df1)
 
 

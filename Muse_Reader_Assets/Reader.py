@@ -59,15 +59,15 @@ class Muse:
             Alpha = 2
             Beta = 3
 
-        self.eeg_data, self.timestamp = self.inlet.pull_chunk(
+        eeg_data, self.timestamp = self.inlet.pull_chunk(
                 timeout=1, max_samples=int(self.SHIFT_LENGTH * self.fs))
 
         # Only keep the channel we're interested in
-        self.ch_data = np.array(self.eeg_data)[:, self.INDEX_CHANNEL]
+        ch_data = np.array(eeg_data)[:, self.INDEX_CHANNEL]
 
         # Update EEG buffer with the new data
         self.eeg_buffer, self.filter_state = utils.update_buffer(
-            self.eeg_buffer, self.ch_data, notch=True,
+            self.eeg_buffer, ch_data, notch=True,
             filter_state=self.filter_state)
 
         """ 3.2 COMPUTE BAND POWERS """
@@ -99,7 +99,7 @@ class Muse:
         # Beta Protocol:
         # Beta waves have been used as a measure of mental activity and concentration
         # This beta over theta ratio is commonly used as neurofeedback for ADHD
-        beta_metric = smooth_band_powers[Band.Beta]# / \
+        beta_metric = smooth_band_powers[Band.Beta] #/ \
                 #smooth_band_powers[Band.Theta]
         #print('Beta Concentration: ', beta_metric)
 

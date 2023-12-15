@@ -1,4 +1,5 @@
 from Game_Folder import Jumpy_Bird as JB
+from Game_Folder.Pong_Assets import Pong_Game as PG
 import pygame as pg
 import asyncio as asyn
 import random
@@ -17,6 +18,7 @@ async def Controller_Method(): # Output of the Muse Device
         
         delta_metric = random.randrange(-1,4)
         beta_metric = random.randrange(-1,4)
+
 
         if delta_metric > 2 and wait == 0:# I need a cooldown for blinks because it stays active for too long
             blink = True
@@ -40,23 +42,26 @@ async def main():
 
     pg.init()
 
-    Game = JB.Game(500, 500)
+    #Game = JB.Game(500, 500)
+    Game = PG.Game(1020, 700)
 
     controller_Function = asyn.create_task(Controller_Method())
 
     running = True
+    test = False
     while running:
-        test = False
     
         # actions for when keys are pressed
         for event in pg.event.get(): 
             if event.type == pg.QUIT:
                 running = False
                 break
-            if event.type == pg.KEYUP:
+            if event.type == pg.KEYDOWN:
                 test = True
+            if event.type == pg.KEYUP:
+                test = False
                   
-        Game.logic(test, focus)
+        Game.logic(test)
         await asyn.sleep(0.01)
 
     controller_Function.cancel()
