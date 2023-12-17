@@ -26,7 +26,7 @@ class Game:
 
         pg.display.flip()
 
-    def logic(self, focus):
+    def logic(self, blink, focus):
         # move the objects
         self.ball.update(self.screen_x)
         self.player.update(focus, self.screen_y)

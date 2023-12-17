@@ -87,8 +87,8 @@ async def main():
 
     pg.init()
 
-    #Game = JB.Game(500, 500)
-    Game = PG.Game(1020, 700)
+    #Game = JB.Game(500, 500) # Flappy Bird
+    Game = PG.Game(1020, 700) # Pong
 
     controller_Function = asyn.create_task(Controller_Method())
 
@@ -101,7 +101,7 @@ async def main():
                 running = False
                 break
                   
-        Game.logic(focus)
+        Game.logic(blink, focus)
         await asyn.sleep(0.01)
 
     controller_Function.cancel()
