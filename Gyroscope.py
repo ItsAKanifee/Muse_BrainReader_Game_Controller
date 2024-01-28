@@ -28,14 +28,17 @@ def update(i):
     global timestamp, inlet
     
     time.append(timestamp)
+
+    xyz = inlet.pull_sample()
+    print(xyz)
     
-    y1.append(inlet.pull_sample())
-    #y2.append(streams[1])
-    #y3.append(streams[2])
+    #y1.append(xyz[0,0])
+    #y2.append(xyz[0,1])
+    #y3.append(xyz[0,2])
 
-    plt.cla()
+    #plt.cla()
 
-    ax1.plot(time, y1)
+    #ax1.plot(time, y1)
     #ax2.plot(time, y2)
     #ax3.plot(time, y3)
 
