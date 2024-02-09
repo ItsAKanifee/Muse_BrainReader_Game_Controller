@@ -74,7 +74,7 @@ async def Controller_Method(): # Output of the Muse Device
         
 
         # count how many times the player is focusing to not focusing 
-        if beta_metric > (lowestB):
+        if beta_metric > (lowestB + 0.1):
             focus = True
         else:
             focus = False
@@ -89,8 +89,8 @@ async def main():
 
     pg.init()
 
-    Game = JB.Game(500, 500) # Flappy Bird
-    #Game = PG.Game(1020, 700) # Pong
+    #Game = JB.Game(500, 500) # Flappy Bird
+    Game = PG.Game(1020, 700) # Pong
 
     controller_Function = asyn.create_task(Controller_Method())
 

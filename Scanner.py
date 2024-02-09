@@ -22,6 +22,9 @@ on = 60
 
 df1 = pd.DataFrame([["Timestamp: ", "Beta: ", "Delta: "], [0,0,0]])
 
+x = 400
+y = 400
+
 while running:
         
         for event in pg.event.get():
@@ -33,7 +36,7 @@ while running:
  
         
         if not on == 0:
-          screen.blit(test_surface, (400,400))
+          screen.blit(test_surface, (x, y))
           on -= 1
         elif wait == 0:
             wait = 30
