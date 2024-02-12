@@ -10,7 +10,6 @@ class Game:
         self.screenY = screen_size_y
 
         # maybe make a deque or something to store the blocks in
-        self.stack = []
 
         # Make a screen of the game
         self.screen = pg.display.set_mode((screen_size_x, screen_size_y))
@@ -20,34 +19,60 @@ class Game:
         pg.display.set_caption("Stacker")
         pg.display.flip()
 
+        self.game_font = pg.font.SysFont('Comic Sans MS', 30)
+
+        self.score = 0
+        self.score_surface = self.game_font.render(str(self.score), True, (0, 0, 0))
+
         base = Block(100, [0,0,0], 0) # set color to black, and velocity to 0
         base.posx = screen_size_x/ 3
         base.posy = 500
-
-        self.stack.append(base) # put in the first block of the stack
 
         # conditions for the 'landing zone' of the block
         self.base_xStart = screen_size_x/ 3
         self.base_xEnd = self.base_xStart + 100
 
-        self.stack.append(base)
+        self.stack = [base]
 
         self.rgb = [250, 0, 0]
-        self.velocity = 5
+        self.velocity = 2
 
         self.block = Block(100, self.rgb, self.velocity)
 
         self.stillIn = True # make a boolean that will tell if the player has lost the game
+
+        self.wait = 0
     
 
     def logic(self, blink):
        self.block.update(self.screenX)
+
+       if blink and self.wait == 0:
+           self.drop()
+           self.wait = 60
+
+       self.screen.blit(self.screen_surface, (0,0))
+       self.drawStack()
+       self.screen.blit(self.block.surface, (self.block.posx, self.block.posy))
+       self.screen.blit(self.score_surface, (900, 10))
+       pg.display.update()
+
+       if self.wait > 0:
+            self.wait -= 1
     
     # Have next method be called whenever the user blinks, where it will drop the current block onto the base,
     # Cutoff any thing extending the base, move base down, and call in a new block assuiming still has length
     def drop(self): 
 
-        self.block.drop(self.base_xStart, self.base_xEnd)
+        success = self.block.drop(self.base_xStart, self.base_xEnd)
+
+        if not success:
+            print("You lose")
+            return
+        else:
+            self.score += 1
+            self.score_surface = self.game_font.render(str(self.score), True, (0, 0, 0))
+
         floor = self.block # set the landing zone for the next block
 
         self.base_xStart = floor.posx
@@ -56,8 +81,24 @@ class Game:
         self.rgb = [self.rgb[0] - 10, self.rgb[1] + 15, self.rgb[2] + 25]
 
         self.stack.append(floor)
-        self.velocity += 0.3
-        self.block = Block(floor.length, self.rgb, self.velocity)
+        self.velocity += 0.2
+
+        self.shift()
+
+        self.block = Block(floor.length, self.rgb, self.velocity) # make a new block to move around
+    
+    def shift(self): # shift all blocks down when block is dropped
+        for i in range(len(self.stack)): 
+            self.stack[i].posy += 10
+
+            # remove blocks from the list if they stretch out of bounds so as to not be capped in RAM
+            if self.stack[i].posy >= self.screenY: 
+                self.stack.pop(i)
+
+    def drawStack(self):
+        for i in range(len(self.stack)):
+            block = self.stack[i]
+            self.screen.blit(block.surface, (block.posx, block.posy))
 
 
 
@@ -68,7 +109,11 @@ class Block:
         self.surface = pg.Surface((xLength, 10))
         self.length = xLength
 
-        self.surface.fill(rgb[0], rgb[1], rgb[2]) # change the rgb values outside of the block, and init them inside block
+        r = rgb[0]
+        g = rgb[1]
+        b = rgb[2]
+
+        self.surface.fill('Red') # change the rgb values outside of the block, and init them inside block
 
         self.direction = 1 # put a boolean int for the direction of the object
 

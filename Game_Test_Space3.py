@@ -1,5 +1,6 @@
 from Game_Folder import Jumpy_Bird as JB
 from Game_Folder.Pong_Assets import Pong_Game as PG
+from Game_Folder.Tower_Stacker import Game as TS
 import pygame as pg
 import asyncio as asyn
 import random
@@ -43,7 +44,8 @@ async def main():
     pg.init()
 
     #Game = JB.Game(500, 500)
-    Game = PG.Game(1020, 700)
+    #Game = PG.Game(1020, 700)
+    Game = TS.Game(1020, 700)
 
     controller_Function = asyn.create_task(Controller_Method())
 
