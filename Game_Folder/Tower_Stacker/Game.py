@@ -21,15 +21,19 @@ class Game:
 
         self.game_font = pg.font.SysFont('Comic Sans MS', 30)
 
+        self.create()
+
+    def create(self):
+
         self.score = 0
-        self.score_surface = self.game_font.render(str(self.score), True, (0, 0, 0))
+        self.score_surface = self.game_font.render(str(self.score), False, (0, 0, 0))
 
         base = Block(100, [0,0,0], 0) # set color to black, and velocity to 0
-        base.posx = screen_size_x/ 3
+        base.posx = self.screenX/ 3
         base.posy = 500
 
         # conditions for the 'landing zone' of the block
-        self.base_xStart = screen_size_x/ 3
+        self.base_xStart = self.screenX/ 3
         self.base_xEnd = self.base_xStart + 100
 
         self.stack = [base]
@@ -42,22 +46,35 @@ class Game:
         self.stillIn = True # make a boolean that will tell if the player has lost the game
 
         self.wait = 0
+
+        self.lose = False
     
 
     def logic(self, blink):
-       self.block.update(self.screenX)
+        self.block.update(self.screenX)
 
-       if blink and self.wait == 0:
+        if blink and self.wait == 0:
            self.drop()
            self.wait = 60
 
-       self.screen.blit(self.screen_surface, (0,0))
-       self.drawStack()
-       self.screen.blit(self.block.surface, (self.block.posx, self.block.posy))
-       self.screen.blit(self.score_surface, (900, 10))
-       pg.display.update()
+        self.screen.blit(self.screen_surface, (0,0))
 
-       if self.wait > 0:
+        if self.lose:
+            youLose = self.game_font.render("You Lose", True, (0, 0, 0))
+            self.screen.blit(youLose, (self.screenX / 2, self.screenY / 2))
+
+            if self.wait == 0:
+                self.create()
+            
+        
+        else:
+            self.drawStack()
+            self.screen.blit(self.block.surface, (self.block.posx, self.block.posy))
+            self.screen.blit(self.score_surface, (900, 10))
+
+        pg.display.update()    
+
+        if self.wait > 0:
             self.wait -= 1
     
     # Have next method be called whenever the user blinks, where it will drop the current block onto the base,
@@ -68,6 +85,7 @@ class Game:
 
         if not success:
             print("You lose")
+            self.lose = True
             return
         else:
             self.score += 1
