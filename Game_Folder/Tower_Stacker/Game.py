@@ -20,28 +20,30 @@ class Game:
         pg.display.flip()
 
         self.game_font = pg.font.SysFont('Comic Sans MS', 30)
+        self.highScore = 0
+        self.highScore_surface = self.game_font.render("High Score: " + str(self.highScore), False, (0, 0, 0))
 
         self.create()
 
     def create(self):
 
         self.score = 0
-        self.score_surface = self.game_font.render(str(self.score), False, (0, 0, 0))
+        self.score_surface = self.game_font.render("Score: " + str(self.score), False, (0, 0, 0))
 
-        base = Block(100, [0,0,0], 0) # set color to black, and velocity to 0
+        base = Block(200, [0,0,0], 0) # set color to black, and velocity to 0
         base.posx = self.screenX/ 3
         base.posy = 500
 
         # conditions for the 'landing zone' of the block
         self.base_xStart = self.screenX/ 3
-        self.base_xEnd = self.base_xStart + 100
+        self.base_xEnd = self.base_xStart + 200
 
         self.stack = [base]
 
         self.rgb = [250, 0, 0]
         self.velocity = 2
 
-        self.block = Block(100, self.rgb, self.velocity)
+        self.block = Block(200, self.rgb, self.velocity)
 
         self.stillIn = True # make a boolean that will tell if the player has lost the game
 
@@ -51,7 +53,6 @@ class Game:
     
 
     def logic(self, blink):
-        self.block.update(self.screenX)
 
         if blink and self.wait == 0:
            self.drop()
@@ -65,14 +66,18 @@ class Game:
 
             if self.wait == 0:
                 self.create()
-            
+                    
         
         else:
             self.drawStack()
             self.screen.blit(self.block.surface, (self.block.posx, self.block.posy))
-            self.screen.blit(self.score_surface, (900, 10))
+            self.screen.blit(self.score_surface, (850, 10))
+            self.screen.blit(self.highScore_surface, (800, 50))
 
-        pg.display.update()    
+        pg.display.update()  
+
+        self.block.update(self.screenX) # realized this should be afterwards so that the image does not update before the press is realized
+
 
         if self.wait > 0:
             self.wait -= 1
@@ -89,7 +94,11 @@ class Game:
             return
         else:
             self.score += 1
-            self.score_surface = self.game_font.render(str(self.score), True, (0, 0, 0))
+            self.score_surface = self.game_font.render("Score: " + str(self.score), True, (0, 0, 0))
+
+            if self.score > self.highScore:
+                self.highScore = self.score
+                self.highScore_surface = self.game_font.render("High Score: " + str(self.highScore), True, (0, 0, 0))
 
         floor = self.block # set the landing zone for the next block
 
@@ -106,12 +115,17 @@ class Game:
         self.block = Block(floor.length, self.rgb, self.velocity) # make a new block to move around
     
     def shift(self): # shift all blocks down when block is dropped
-        for i in range(len(self.stack)): 
+        length = len(self.stack)
+        i = 0
+        while i < length: 
             self.stack[i].posy += 10
 
             # remove blocks from the list if they stretch out of bounds so as to not be capped in RAM
             if self.stack[i].posy >= self.screenY: 
                 self.stack.pop(i)
+                length -= 1
+            
+            i += 1
 
     def drawStack(self):
         for i in range(len(self.stack)):
