@@ -19,17 +19,35 @@ class Game:
 
         pg.display.set_caption("Ping") # named for copyright purposes
 
+        self.game_font = pg.font.SysFont('Comic Sans MS', 30)
+
         # add in the player, enemy, and ball objects
         self.ball = Ball()
         self.player = Player()
         self.enemy = Enemy()
 
+        self.down = True # make a global variable that will move the block down if the palyer is focusing; however, when the payer blinks, it swaps directions 
+        # when the player is not focusing, the paddle will not move
+        self.real = 0 # make another frame counter because this crap is getting annoying
+
         pg.display.flip()
 
     def logic(self, blink, focus):
         # move the objects
+        if blink and self.real == 0:
+            self.down = not self.down
+            self.real = 15
+        
+        if self.real > 0:
+            self.real -= 1
+
+        if self.down:
+            self.direct = self.game_font.render("Down", False, (0,0,0))
+        else:
+            self.direct = self.game_font.render("Up", False, (0,0,0))
+
         self.ball.update(self.screen_x)
-        self.player.update(focus, self.screen_y)
+        self.player.update(focus, self.screen_y, self.down)
         self.enemy.update(self.ball.velocity, self.screen_y, self.ball.Posy, self.ball.Posx, self.ball.angle)
 
         self.physics()
@@ -38,6 +56,7 @@ class Game:
         self.screen.blit(self.player.surface, (50, self.player.PosY))
         self.screen.blit(self.enemy.surface, (900, self.enemy.PosY))
         self.screen.blit(self.ball.surface, (self.ball.Posx, self.ball.Posy))
+        self.screen.blit(self.direct, (10,10))
         pg.display.update()
 
     def physics(self):

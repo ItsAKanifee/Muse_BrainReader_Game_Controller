@@ -4,6 +4,7 @@ import asyncio as asyn
 import random
 from Muse_Reader_Assets import Reader
 from Game_Folder.Pong_Assets import Pong_Game as PG
+from Game_Folder.Tower_Stacker import Game as TS
 
 Muse_Device = Reader.Muse()
 
@@ -71,16 +72,23 @@ async def Controller_Method(): # Output of the Muse Device
         if delta_metric > 1: # reset function
             lowestB = 0
             
-        
+        if beta_metric > 0:
+            focus = True
+            #pass
+        else:
+            focus = False
+            #pass
 
         # count how many times the player is focusing to not focusing 
         if beta_metric > (lowestB + 0.1):
-            focus = True
+            #focus = True
+            pass
         else:
-            focus = False
+            #focus = False
+            pass
 
 
-        await asyn.sleep(0.2) # necessary to not allow the pygame method to break
+        await asyn.sleep(0.175) # necessary to not allow the pygame method to break
          
 
 async def main():
@@ -91,6 +99,7 @@ async def main():
 
     #Game = JB.Game(500, 500) # Flappy Bird
     Game = PG.Game(1020, 700) # Pong
+    #Game = TS.Game(1020, 700)
 
     controller_Function = asyn.create_task(Controller_Method())
 

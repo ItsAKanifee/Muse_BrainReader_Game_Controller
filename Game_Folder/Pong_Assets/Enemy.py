@@ -24,10 +24,10 @@ class Enemy:
         self.up = 0
         destination = self.calculate(BallV, BallPy, BallPx, Ball_Ang)
         if self.PosY <= destination and self.bottomY <= screenY:
-            self.PosY += 5
+            self.PosY += 2
             self.up = 1
         if self.PosY >= destination and self.PosY >= 0:
-            self.PosY -= 5
+            self.PosY -= 2
             self.up = -1
         self.bottomY = self.PosY + self.sizeY
     

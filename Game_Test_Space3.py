@@ -63,7 +63,7 @@ async def main():
             if event.type == pg.KEYUP:
                 test = False
                   
-        Game.logic(test)
+        Game.logic(test, True)
         await asyn.sleep(0.01)
 
     controller_Function.cancel()

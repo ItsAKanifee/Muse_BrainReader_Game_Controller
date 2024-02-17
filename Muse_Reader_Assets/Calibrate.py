@@ -157,8 +157,8 @@ while True:
     
     dBef = delta
 
-    if(beta > betaSig):
-        print('focus')
+    if(delta > dPeak):
+        print('blink2')
 
     
 

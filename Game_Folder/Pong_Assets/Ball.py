@@ -11,7 +11,7 @@ class Ball:
         self.Posx = 300
         self.Posy = 300
         
-        self.velocity = 7
+        self.velocity = 4
         self.angle = 30
 
         #get the full block

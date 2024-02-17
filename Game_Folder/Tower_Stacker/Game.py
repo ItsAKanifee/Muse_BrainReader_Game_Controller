@@ -52,7 +52,7 @@ class Game:
         self.lose = False
     
 
-    def logic(self, blink):
+    def logic(self, blink, focus):
 
         if blink and self.wait == 0:
            self.drop()
