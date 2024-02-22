@@ -41,7 +41,7 @@ def update(i):
     
     y1.append(alpha)
     y2.append(beta)
-    print("timestamp: ", timestamp,  "Delta: ", delta)
+    print("timestamp: ", timestamp,  "Alpha: ", alpha)
     y3.append(theta)
     y4.append(delta)
     plt.cla()

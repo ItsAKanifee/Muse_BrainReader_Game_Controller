@@ -21,6 +21,7 @@ async def Controller_Method(): # Output of the Muse Device
     betBef = 0
     checked = 0
     lowestB = 0
+    highestB = 0
     while True: 
         global blink, focus, wait
 
@@ -58,6 +59,9 @@ async def Controller_Method(): # Output of the Muse Device
         if beta_metric < lowestB:
             lowestB = beta_metric
         
+        if beta_metric > highestB:
+            highestB = beta_metric
+        
         # test whether the player is focusing or not on the object
         if betBef > beta_metric:
             if beta_metric < 10: # count up to 10 times, then stop counter
@@ -74,10 +78,19 @@ async def Controller_Method(): # Output of the Muse Device
             
         if beta_metric > 0:
             focus = True
-            #pass
+            if beta_metric < highestB - 0.1:
+                focus = False
+            else:
+                focus = True
+                #pass
         else:
             focus = False
             #pass
+        
+        
+        
+        if beta_metric <= highestB/2:
+            highestB /= 2
 
         # count how many times the player is focusing to not focusing 
         if beta_metric > (lowestB + 0.1):
