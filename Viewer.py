@@ -1,7 +1,7 @@
 
 import matplotlib.pyplot as plt
 import matplotlib.animation as ani
-import pandas as pd
+#import pandas as pd
 import math
 import pylsl
 import numpy as np
@@ -29,7 +29,7 @@ Device = Reader.Muse()
 
 timestamp = 0
 
-df1 = pd.DataFrame([["timestamp: ", "Beta: ", "Delta: "], [0,0,0]])
+#df1 = pd.DataFrame([["timestamp: ", "Beta: ", "Delta: "], [0,0,0]])
 
 def update(i):
     global timestamp
@@ -37,7 +37,7 @@ def update(i):
     alpha, beta, theta, delta = Device.process()
     time.append(timestamp)
 
-    df1.loc[i+1] = [timestamp, beta, delta]
+    #df1.loc[i+1] = [timestamp, beta, delta]
     
     y1.append(alpha)
     y2.append(beta)
@@ -60,6 +60,6 @@ plt.show()
 plt.close()
 
 print("Done")
-print(df1)
+#print(df1)
 
 
