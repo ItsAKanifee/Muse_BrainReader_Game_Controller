@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import matplotlib.animation as ani
-import pandas as pd
+#import pandas as pd
 import math
 import pylsl
 import numpy as np
