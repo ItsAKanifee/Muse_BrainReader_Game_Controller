@@ -91,7 +91,7 @@ def compute_band_powers(eegdata, fs):
     ind_delta, = np.where(f < 4)
     meanDelta = np.mean(PSD[ind_delta, :], axis=0)
     # Theta 4-8
-    ind_theta, = np.where((f >= 4) & (f <= 8))
+    ind_theta, = np.where(f >= 30) # idea: what if I swapped this out for gamma waves?
     meanTheta = np.mean(PSD[ind_theta, :], axis=0)
     # Alpha 8-12
     ind_alpha, = np.where((f >= 8) & (f <= 12))

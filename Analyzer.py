@@ -3,7 +3,7 @@
 Estimate Relaxation from Band Powers
 
 This example shows how to buffer, epoch, and transform EEG data from a single
-electrode into values for each of the classic frequencies (e.g. alpha, beta, theta)
+electrode into values for each of the classic frequencies (e.g. alpha, beta, Gamma)
 Furthermore, it shows how ratios of the band powers can be used to estimate
 mental state for neurofeedback.
 
@@ -24,10 +24,9 @@ import utils  # Our own utility functions
 
 class Band:
     Delta = 0
-    Theta = 1
+    Gamma = 1
     Alpha = 2
     Beta = 3
-    Gamma = 4
 
 
 """ EXPERIMENTAL PARAMETERS """
@@ -86,7 +85,7 @@ if __name__ == "__main__":
                               SHIFT_LENGTH + 1))
 
     # Initialize the band power buffer (for plotting)
-    # bands will be ordered: [delta, theta, alpha, beta]
+    # bands will be ordered: [delta, Gamma, alpha, beta]
     band_buffer = np.zeros((n_win_test, 4))
 
     """ 3. GET DATA """
@@ -128,8 +127,8 @@ if __name__ == "__main__":
             #if band_powers[Band.Delta] > 1:
                 #print("blink")
 
-            #print('Delta: ', band_powers[Band.Delta], ' Theta: ', band_powers[Band.Theta],
-                  #' Alpha: ', band_powers[Band.Alpha], ' Beta: ', band_powers[Band.Beta])
+            print('Delta: ', band_powers[Band.Delta], ' Gamma: ', band_powers[Band.Gamma],
+                  ' Alpha: ', band_powers[Band.Alpha], ' Beta: ', band_powers[Band.Beta])
 
             """ 3.3 COMPUTE NEUROFEEDBACK METRICS """
             # These metrics could also be used to drive brain-computer interfaces
@@ -142,17 +141,17 @@ if __name__ == "__main__":
 
             # Beta Protocol:
             # Beta waves have been used as a measure of mental activity and concentration
-            # This beta over theta ratio is commonly used as neurofeedback for ADHD
+            # This beta over Gamma ratio is commonly used as neurofeedback for ADHD
             beta_metric = smooth_band_powers[Band.Beta] / \
-                 smooth_band_powers[Band.Theta]
-            print('Beta Concentration: ', beta_metric)
+                 smooth_band_powers[Band.Gamma]
+            #print('Beta Concentration: ', beta_metric)
 
-            # Alpha/Theta Protocol:
+            # Alpha/Gamma Protocol:
             # This is another popular neurofeedback metric for stress reduction
-            # Higher theta over alpha is supposedly associated with reduced anxiety
-            theta_metric = smooth_band_powers[Band.Theta] / \
+            # Higher Gamma over alpha is supposedly associated with reduced anxiety
+            Gamma_metric = smooth_band_powers[Band.Gamma] / \
                 smooth_band_powers[Band.Alpha]
-            #print('Theta Relaxation: ', theta_metric)
+            #print('Gamma Relaxation: ', Gamma_metric)
             #print(smooth_band_powers[Band.Gamma])
 
            
