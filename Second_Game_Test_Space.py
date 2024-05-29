@@ -111,8 +111,8 @@ async def main():
     pg.init()
 
     #Game = JB.Game(500, 500) # Flappy Bird
-    Game = PG.Game(1020, 700) # Pong
-    #Game = TS.Game(1020, 700)
+    #Game = PG.Game(1020, 700) # Pong
+    Game = TS.Game(1020, 700)
 
     controller_Function = asyn.create_task(Controller_Method())
 
