@@ -1,3 +1,5 @@
+# Main code for the project
+
 from Game_Folder import Jumpy_Bird as JB
 import pygame as pg
 import asyncio as asyn

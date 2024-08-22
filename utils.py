@@ -1,3 +1,4 @@
+# All of the following is code from Muse LSL GitHub, they had a working example of connecting to the Muse Device.
 # -*- coding: utf-8 -*-
 """
 Muse LSL Example Auxiliary Tools

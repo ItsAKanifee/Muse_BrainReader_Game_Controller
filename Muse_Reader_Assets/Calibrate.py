@@ -2,6 +2,7 @@ from Reader import Muse
 import time
 import os
 
+#Taken from the analyzer code example
 def calibrate(muse: Muse):
     os.system('cls')
     timestamp = 0

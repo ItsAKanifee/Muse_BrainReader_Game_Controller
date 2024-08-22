@@ -1,3 +1,5 @@
+# All of the following is code from Muse LSL GitHub, they had a working example of connecting to the Muse Device
+# This code is an example for the rest of the project
 # -*- coding: utf-8 -*-
 """
 Estimate Relaxation from Band Powers
