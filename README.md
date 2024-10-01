@@ -1,9 +1,15 @@
 # Muse_BrainReader
-This is a project in which I attempted to have a Muse Brain Scanner Communicate with my computer to become a working video game controller.
+This is a project in which I attempted to have a Muse Brain Scanner Communicate with my computer to become a working video game controller. The idea behind this was to make a way for people without full use of their hands to still be able to play video games.
 
 
 
-Has many issues, but the was able to have the headset communicate with my computer and send a somewhat interperable EEG signal. I atttempted making three working games: Flappy Bird, Pong, and Tower Stacker (there are some other games that I could not get done). I used joke names in a futile attempt to be funny.
+
+The project has several issues, but I was able to have the headset communicate with my computer and send a somewhat interperable EEG signal. I atttempted making three working games: Flappy Bird, Pong, and Tower Stacker (there are some other games that I could not get done). I used joke names in a futile attempt to be funny.
+
+
+
+
+The Signal Reader is stored in the Muse Folder. The code basically allows for the Muse Brain scanner to be treated as an object that can be utilized by the game code. By initializing the object, it allows for the Python code to recognize the Brain Scanner, and start reading signals. The analyze signal works at every 0.1 seconds, and gives a reading of the EEG signal in 4 points, each outputing a diferent Brain Signal (Alpha, Beta, Theta, Delta).
 
 
 
