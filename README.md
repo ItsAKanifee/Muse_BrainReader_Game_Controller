@@ -8,9 +8,7 @@ Muse_BrainReader is an experimental collection of Python scripts and small games
 Highlights
 ----------
 
-- Example games: Flappy Bird, Pong, Tower Stacker (and other smaller experiments) in `Game_Folder/`.
-- EEG integration code and utilities under `Muse_Reader_Assets/`.
-- Supporting scripts and tools at the repository root (e.g., `Main.py`, `Viewer.py`, `Scanner.py`).
+Has many issues, but the was able to have the headset communicate with my computer and send a somewhat interperable EEG signal. I atttempted making three working games: Flappy Bird, Pong, and Tower Stacker (there are some other games that I could not get done). I used joke names in a futile attempt to be funny.
 
 Quickstart
 ----------
