@@ -1,18 +1,41 @@
 # Muse_BrainReader
-This is a project in which I attempted to have a Muse Brain Scanner Communicate with my computer to become a working video game controller.
 
+Overview
+--------
 
+Muse_BrainReader is an experimental collection of Python scripts and small games demonstrating basic Muse EEG headset input integration. The project started as a high-school experiment to use Muse-derived signals as game controllers.
 
-Has many issues, but the was able to have the headset communicate with my computer and send a somewhat interperable EEG signal. I atttempted making three working games: Flappy Bird, Pong, and Tower Stacker (there are some other games that I could not get done). I used joke names in a futile attempt to be funny.
+Highlights
+----------
 
+- Example games: Flappy Bird, Pong, Tower Stacker (and other smaller experiments) in `Game_Folder/`.
+- EEG integration code and utilities under `Muse_Reader_Assets/`.
+- Supporting scripts and tools at the repository root (e.g., `Main.py`, `Viewer.py`, `Scanner.py`).
 
+Quickstart
+----------
 
-Flappy Bird and Tower Stacker both utilize the delta signal deviations from blinging to act as a signal input to allow the player to control the game. Pong on the other hand uses the beta signal, and was supposed to allow the player to move the left paddle when focusing on it. Flappy Bird and Tower Stack are finnicky, but are able to be played; however, they may need to be sloweddown as the signal processing is not always the most responsive. Pong, on the other hand, is not playable as I intended, as it becomes rather difficult to controller the paddle to move in the direction the player wants it to go. More experimentation with weights need to be done to make it more effective.
+1. Create and activate a Python virtual environment (Python 3.8+ recommended).
+2. See docs/INSTALL.md for environment setup details.
+3. Run an example entrypoint, for example:
 
+```
+python Main.py
+```
 
+Behavior Notes
+--------------
 
-At the end of the day, this is a high school project that demonstrated the best of my coding and problem solving abilities at the time, and if you would like to use parts of the code within your own project, feel free.
+- Flappy Bird and Tower Stacker use delta-band deviations triggered by blinks as control signals.
+- Pong uses beta-band signals intended for focus-based control; it may require tuning and is known to be less stable.
+- This repository is experimental: signal processing, weights, and responsiveness may need further tuning.
 
+Credits
+-------
 
+This project builds on work from projects such as PyLSL and MuseLSL (https://github.com/alexandrebarachant/muse-lsl), and tools like Petal Metrics (https://petal.tech/).
 
-Some of this code was not my original work, and credit should be given to PyLSL and MuseLSL (https://github.com/alexandrebarachant/muse-lsl) for making an interpretation of the EEG signal that I could use within the game, as well as Petal Metrics (https://petal.tech/) for being a tool that could allow the headset to communicate with my computer.
+Documentation
+-------------
+
+Detailed setup and usage instructions are in the `docs/` folder included with this repository.
